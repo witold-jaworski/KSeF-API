@@ -1,7 +1,7 @@
 # KSeF Services
 **KSeF.Services** jest działająca "w tle" lokalną aplikacją (*background service*) Microsoft Windows. To "wrapper" wokół biblioteki udostępnionej przez Ministerstwo Finansów. Pozwala połączonemu z nim programowi wywoływać metody API KSeF i zwraca rezultaty tych metod. Wartość dodana tego narzędzia: wykonuje wymagane przez API KSeF zaawansowane operacje na danych wejściowych, związane z szyfrowaniem, liczeniem skrótów, czy infrastrukturą PKI. Umożliwia implementację obsługi KSeF w  starszych językach programowania lub skryptach (np. JScript, VBA). 
 
-**KSeF.Services.exe** jest programem Open Source, napisanym w .NET 9.0. Jest przeznaczony do działania na tym samym komputerze, co program Klienta. Komunikuje się z nim poprzez potoki nazwane.   
+**KSeF.Services.exe** jest programem lini poleceń napisanym w .NET 9.0. Powstał z szablonu _Worker Service_, towarzyszącemu SDK dla Windows. Jest przeznaczony do działania na tym samym komputerze, co program Klienta. Komunikuje się z nim poprzez potoki nazwane.   
 
 >[!IMPORTANT]
 >Aby skompilować ten projekt, należy dodatkowo pobrać [oficjalną bibliotekę CIRFMF .NET dla KSeF](https://github.com/CIRFMF/ksef-client-csharp). Umieść folder z jej plikiem _*.sln_ (ksef-client-csharp) obok folderu z tym rozwiązaniem:
