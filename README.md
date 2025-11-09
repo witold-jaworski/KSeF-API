@@ -14,7 +14,7 @@ Następnie otwórz w Visual Studio rozwiązanie _KSeF-API.sln_ i dodaj polecenie
 >Aby skompilować projekt _KSeF.Client_, w sekcji _Build:Strong naming_ jego właściwości wyłącz opcję podpisywania kodu (_Sign the assembly_).
 
 ## Uwagi i linki do dokumentacji
-Publikuję tu wersję aplikacji, z której sam korzystam. Zestaw udostępnionych przez nią metod to odzwierciedlenie potrzeb mojego Klienta. Sądzę jednak, że jest na tyle szeroki, że może się przydać innym. W razie potrzeby stwórz swój _fork_ tego projektu. 
+Publikuję tu wersję aplikacji, z której sam korzystam. Zestaw udostępnionych przez nią metod to odzwierciedlenie potrzeb mojego Klienta. Sądzę jednak, że jest na tyle szeroki, że może się przydać innym. W razie potrzeby stwórz swoją wersję (_fork_) tego projektu. 
 
 Dodawanie kolejnych klas do obsługi nowych żądań jest proste, opisałem je [tutaj](KSeF.Services/docs/Rozbudowa.md)
 
