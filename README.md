@@ -6,7 +6,7 @@
 **Ważne**
 Aby skompilować ten projekt, należy obok folderu z tym rozwiązaniem umieścić folder z biblioteką MF (ksef-client-csharp):
 ```
-KSeF.Services\ <=to folder tego rozwiązania (tzn. folder z plikiem KSeF-API.ex.sln) 
+KSeF-API\ <=to folder tego rozwiązania
 ksef-client-csharp\ <= to folder biblioteki MF
 ```
 a następnie dodać do rozwiązania _KSeF-API.ex.sln_ poleceniami **Add:Existing Project...** dwa projekty z folderu _ksef-client-csharp_: **KSeF.Client** i **KSeF.Client.Core**. (Figurują w zależnościach KSeF.Services)
