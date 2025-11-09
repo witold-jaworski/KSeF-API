@@ -11,6 +11,9 @@ ksef-client-csharp\ <= to folder biblioteki MF
 ```
 a następnie dodać do rozwiązania _KSeF-API.sln_ poleceniami **Add:Existing Project...** dwa projekty z folderu _ksef-client-csharp_: **KSeF.Client** i **KSeF.Client.Core**. (Figurują w zależnościach KSeF.Services)
 
-Publikuję tu wersję aplikacji, z której sam korzystam. Stąd zestaw udostępnionych przez nią metod to odzwierciedlenie potrzeb mojego Klienta. Sądzę jednak że jest na tyle szeroki, że nawet w tej postaci może się przydać innym. W razie potrzeby zawsze możesz stworzyć swój _fork_. Dodawanie kolejnych klas do obsługi nowych żądań jest proste, opisałem je [tutaj](KSeF.Services/docs/Rozbudowa.md)
+## Uwagi i linki do dokumentacji
+Publikuję tu wersję aplikacji, z której sam korzystam. Stąd zestaw udostępnionych przez nią metod to odzwierciedlenie potrzeb mojego Klienta. Sądzę jednak że jest na tyle szeroki, że nawet w tej postaci może się przydać innym. W razie potrzeby zawsze możesz stworzyć swój _fork_. 
+
+Dodawanie kolejnych klas do obsługi nowych żądań jest proste, opisałem je [tutaj](KSeF.Services/docs/Rozbudowa.md)
 
 Szczegóły użycia Ksef.Services.exe / implementacji Klienta znajdziesz w [opisie programu](KSeF.Services/docs/Opis.md)
