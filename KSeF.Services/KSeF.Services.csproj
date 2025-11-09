@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-KSeF.Services-9ce86c9c-cf40-4880-b555-711f0cc90d72</UserSecretsId>
+    <!-- <VersionPrefix>alpha-</VersionPrefix> --> <!-- z tym elementem lepiej nie eksperymentuj, bo to może *zepsuć kompilację* -->
+    <ProductVersion>0.8.0.0</ProductVersion>
+    <FileVersion>$(VersionPrefix)$(ProductVersion)</FileVersion>
+    <AssemblyVersion>$(VersionPrefix)$(ProductVersion)</AssemblyVersion>
+    <InformationalVersion>$(ProductVersion) (alpha)</InformationalVersion> <!-- W properties *.exe to "Product version". Dowolny tekst -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="9.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ksef-client-csharp\KSeF.Client.Core\KSeF.Client.Core.csproj" />
+    <ProjectReference Include="..\..\ksef-client-csharp\KSeF.Client\KSeF.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="System.Diagnostics" />
+  </ItemGroup>
+</Project>

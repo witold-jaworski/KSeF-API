@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "KSeF.Services": {
+      "commandName": "Project",
+      "commandLineArgs": "--PipesPrefix \"Test\" --TargetUrl \"TEST\" --Settings \"..\\..\\..\\*\" --CertsFolder \"C:\\Users\\Hyperbook\\Documents\\ZigZak\\KSeF\\Connector\\data\\TEST\" --LogsFolder \"C:\\Users\\Hyperbook\\Documents\\ZigZak\\KSeF\\Connector\\data\\TEST\\5251469286\\Diags\\KSeF.Services\" --OutputEncoding \"windows-1250\"",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json"
+}

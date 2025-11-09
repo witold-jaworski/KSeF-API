@@ -1,0 +1,48 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using KSeF.Client.Http;
+using KSeF.Client.Core.Models.Authorization;
+
+namespace KSeF.Services.Api
+{
+	//Tworzy nowy token dostępowy za pomoca refreshToken
+	[HandlesRequest("RefreshAccessToken")]
+	internal class RefreshAccessToken : HandlerBase
+	{
+		//------------ Struktury ------------------
+		//Struktura danych wejściowych (w JSON pierwsze litery nazw pól mają być małe):
+		protected class InputData
+		{
+			public required string RefreshToken { get; set; } //token uzyskany z GetAccessToken
+		}
+		//	Rezultat:	verbatim z KSeF.Client (RefreshTokenResponse)
+		protected InputData? _input;
+		protected RefreshTokenResponse? _output;
+		public override bool RequiresInput { get { return true; } }
+
+		public override bool HasResults { get { return true; } }
+
+		public override Task PrepareInputAsync(string data, CancellationToken stopToken)
+		{
+			_input = JsonUtil.Deserialize<InputData>(data);
+			if (_input == null) throw new ArgumentException($"Cannot parse expression '{data}'", nameof(data));
+
+			return Task.CompletedTask;
+		}
+
+		public override async Task ProcessAsync(CancellationToken stopToken)
+		{
+			Debug.Assert(_input != null);
+			Debug.Assert(_ksefClient != null);
+			_output = await _ksefClient.RefreshAccessTokenAsync(_input.RefreshToken, stopToken);
+		}
+
+		public override string SerializeResults()
+		{
+			Debug.Assert(_output != null);
+			return _output.ToJson();
+		}
+	}
+}
