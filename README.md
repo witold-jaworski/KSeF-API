@@ -16,7 +16,7 @@ Następnie otwórz w Visual Studio _KSeF-API\KSeF-API.sln_ i dodaj poleceniem **
 ## Uwagi i linki do dokumentacji
 Publikuję tu wersję aplikacji, z której sam korzystam. Zestaw udostępnionych przez nią metod to odzwierciedlenie potrzeb mojego Klienta. Jest jednak na tyle szeroki, że może się przydać innym. W razie potrzeby stwórz swoją wersję (_fork_) tego projektu. 
 
-Dodawanie kolejnych klas do obsługi nowych żądań jest proste, opisałem je [tutaj](KSeF.Services/docs/Rozbudowa.md).
+Dodawanie klasy obsługującej jakieś nowe żądanie jest proste, opisałem je [tutaj](KSeF.Services/docs/Rozbudowa.md).
 
 Szczegóły użycia Ksef.Services.exe / implementacji Klienta znajdziesz w [opisie programu](KSeF.Services/docs/Opis.md).\
 Początek [tej sekcji](https://github.com/witold-jaworski/KSeF-API/blob/master/KSeF.Services/docs/Opis.md#informacje-zwracane-przez-potok-diagnostyczny) wyjaśnia architekturę aplikacji. 
