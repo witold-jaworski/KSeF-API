@@ -4,12 +4,12 @@
 **KSeF.Services.exe** jest programem lini poleceń napisanym w .NET 9.0. Powstał z szablonu _Worker Service_, towarzyszącemu SDK dla Windows. Jest przeznaczony do działania na tym samym komputerze, co program Klienta. Komunikuje się z nim poprzez potoki nazwane.   
 
 >[!IMPORTANT]
->Aby skompilować ten projekt, należy dodatkowo pobrać [oficjalną bibliotekę CIRFMF .NET dla KSeF](https://github.com/CIRFMF/ksef-client-csharp). Umieść jej folder (ksef-client-csharp) obok folderu tego rozwiązania (_solution_):
+>Aby skompilować ten projekt, należy dodatkowo pobrać [oficjalną bibliotekę CIRFMF .NET dla KSeF](https://github.com/CIRFMF/ksef-client-csharp). Umieść jej folder (ksef-client-csharp) obok folderu tego rozwiązania[^1]:
 ```
 KSeF-API\ <=to folder tego rozwiązania 
 ksef-client-csharp\ <= to folder biblioteki MF 
 ```
-Następnie otwórz w Visual Studio KSeF-API\_KSeF-API.sln_ i dodaj poleceniem **Add:Existing Project...** dwa projekty z folderu _ksef-client-csharp_: **KSeF.Client** i **KSeF.Client.Core**. (Figurują w zależnościach projektu _KSeF.Services_). 
+Następnie otwórz w Visual Studio _KSeF-API\KSeF-API.sln_ i dodaj poleceniem **Add:Existing Project...** dwa projekty z folderu _ksef-client-csharp_: **KSeF.Client** i **KSeF.Client.Core**. (Figurują w zależnościach projektu _KSeF.Services_). 
 >[!NOTE]
 >Aby skompilować projekt _KSeF.Client_, w sekcji _Build:Strong naming_ jego właściwości wyłącz opcję podpisywania kodu (_Sign the assembly_).
 
@@ -18,4 +18,7 @@ Publikuję tu wersję aplikacji, z której sam korzystam. Zestaw udostępnionych
 
 Dodawanie kolejnych klas do obsługi nowych żądań jest proste, opisałem je [tutaj](KSeF.Services/docs/Rozbudowa.md)
 
-Szczegóły użycia Ksef.Services.exe / implementacji Klienta znajdziesz w [opisie programu](KSeF.Services/docs/Opis.md)
+Szczegóły użycia Ksef.Services.exe / implementacji Klienta znajdziesz w [opisie programu](KSeF.Services/docs/Opis.md)\
+Początek [tej sekcji](https://github.com/witold-jaworski/KSeF-API/blob/master/KSeF.Services/docs/Opis.md#informacje-zwracane-przez-potok-diagnostyczny) wyjaśnia architekturę aplikacji. 
+
+[^1]:Słowo "rozwiązanie" w tym tekście oznacza termin _solution_ używany w Visual Studio. Jest związane z plikiem _*.sln_ umieszczonym w katalogu głównym każdego z tych dwóch folderów.
