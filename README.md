@@ -1,15 +1,15 @@
 # KSeF Services
-**KSeF.Services** jest działająca "w tle" lokalną aplikacją (*background service*) Microsoft Windows. To "wrapper" wokół biblioteki udostępnionej przez Ministerstwo Finansów. Pozwala połączonemu z nim programowi wywoływać metody API KSeF i zwraca rezultaty tych metod. Wartość dodana tego narzędzia: wykonuje wymagane przez API KSeF zaawansowane operacje na danych wejściowych, związane z szyfrowaniem, liczeniem skrótów, czy infrastrukturą PKI. To umożliwia implementację obsługi KSeF w  starszych językach programowania lub skryptach (np. JScript, VBA). 
+**KSeF.Services** to działająca "w tle" lokalna aplikacja (*background service*) Microsoft Windows. Jest adaptacją ("wrapperem") oficjalnej biblioteki udostępnionej przez Ministerstwo Finansów. KSeF.Services pozwala połączonemu z nią programowi wywoływać metody API KSeF, oraz oferuje trochę funkcji dodatkowych. Wartość dodana tego narzędzia: wykonuje wymagane przez API KSeF zaawansowane operacje na danych wejściowych, związane z szyfrowaniem, liczeniem skrótów, czy infrastrukturą PKI. To umożliwia implementację obsługi KSeF w  starszych językach programowania lub skryptach (np. JScript, VBA). 
 
 **KSeF.Services.exe** jest programem lini poleceń napisanym w .NET 9.0. Powstał z szablonu _Worker Service_, towarzyszącemu SDK dla Windows. Jest przeznaczony do działania na tym samym komputerze, co program Klienta. Komunikuje się z nim poprzez potoki nazwane.   
 
 >[!IMPORTANT]
->Aby skompilować ten projekt, należy dodatkowo pobrać [oficjalną bibliotekę CIRFMF .NET dla KSeF](https://github.com/CIRFMF/ksef-client-csharp). Umieść folder z jej plikiem _*.sln_ (ksef-client-csharp) obok folderu z tym rozwiązaniem:
+>Aby skompilować ten projekt, należy dodatkowo pobrać [oficjalną bibliotekę CIRFMF .NET dla KSeF](https://github.com/CIRFMF/ksef-client-csharp). Umieść jej folder (ksef-client-csharp) obok folderu tego rozwiązania (_solution_):
 ```
 KSeF-API\ <=to folder tego rozwiązania 
 ksef-client-csharp\ <= to folder biblioteki MF 
 ```
-Następnie otwórz w Visual Studio rozwiązanie _KSeF-API.sln_ i dodaj poleceniem **Add:Existing Project...** dwa projekty z folderu _ksef-client-csharp_: **KSeF.Client** i **KSeF.Client.Core**. (Figurują w zależnościach projektu _KSeF.Services_). 
+Następnie otwórz w Visual Studio KSeF-API\_KSeF-API.sln_ i dodaj poleceniem **Add:Existing Project...** dwa projekty z folderu _ksef-client-csharp_: **KSeF.Client** i **KSeF.Client.Core**. (Figurują w zależnościach projektu _KSeF.Services_). 
 >[!NOTE]
 >Aby skompilować projekt _KSeF.Client_, w sekcji _Build:Strong naming_ jego właściwości wyłącz opcję podpisywania kodu (_Sign the assembly_).
 
