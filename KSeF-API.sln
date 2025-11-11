@@ -5,6 +5,10 @@ VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSeF.Services", "..\KSeF-API\KSeF.Services\KSeF.Services.csproj", "{10A75BDD-3E63-B8D8-F956-25CBEEB011BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSeF.Client.Core", "..\ksef-client-csharp\KSeF.Client.Core\KSeF.Client.Core.csproj", "{D9D4AD61-7285-8325-7EA5-A642FAA3EFB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSeF.Client", "..\ksef-client-csharp\KSeF.Client\KSeF.Client.csproj", "{5D2D23F4-7A69-6AC7-0697-F7CCFA336599}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{10A75BDD-3E63-B8D8-F956-25CBEEB011BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10A75BDD-3E63-B8D8-F956-25CBEEB011BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10A75BDD-3E63-B8D8-F956-25CBEEB011BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9D4AD61-7285-8325-7EA5-A642FAA3EFB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9D4AD61-7285-8325-7EA5-A642FAA3EFB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9D4AD61-7285-8325-7EA5-A642FAA3EFB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9D4AD61-7285-8325-7EA5-A642FAA3EFB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D2D23F4-7A69-6AC7-0697-F7CCFA336599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D2D23F4-7A69-6AC7-0697-F7CCFA336599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D2D23F4-7A69-6AC7-0697-F7CCFA336599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D2D23F4-7A69-6AC7-0697-F7CCFA336599}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

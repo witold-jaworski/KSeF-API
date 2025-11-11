@@ -62,15 +62,16 @@ namespace KSeF.Services
 			if (!Debugger.IsAttached)
 			{
 				System.Diagnostics.Trace.Listeners.Clear();
-				Console.WriteLine("Compiled as: DEBUG, running with assertions disabled\n");
+				Console.WriteLine("Compiled as: DEBUG, running with assertions disabled");
 			}
 			else 
 			{
-				Console.WriteLine("Compiled as: DEBUG, running in debugged session\n");
+				Console.WriteLine("Compiled as: DEBUG, running in debugged session");
 			}
 #else
 			Console.WriteLine("Compiled as: RELEASE");
 #endif
+			Console.WriteLine($"Reference (root) folder: '{FullPath(".")}'\n");
 
 			var builder = Host.CreateApplicationBuilder(args); //W tym momencie builder.Configuration zawiera argumenty programu i ustawienia wczytane z appsettings.json
 

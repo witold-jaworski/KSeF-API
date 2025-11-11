@@ -9,7 +9,7 @@ Dodanie obs³ugi nowego ¿¹dania polega na dodaniu do kodu programu nowej klasy:
 
 Klasê obs³ugi ¿¹dania mo¿na stworzyæ stworzyæ jako rozszerzenie abstrakcyjnej klasy **HandlerBase**. Ta klasa implementuje *IRequestHandler* i inicjalizuje wewnêtrzne pola obiektu dostêpne dla klasy potomnej:
 * **_request**: tekst ¿¹dania (przydatny, gdy klasa obs³uguje wiêcej ni¿ jedno).
-* **_ksefClient**: serwis *IKSeFClient*, do wywo³ania ¿¹dania.
+* **_ksefClient**: serwis *IKSeFClient*, do wywo³ania ¿¹dania. Jest = _null_, gdy pracujesz w trybie _"Local:"_ ("Loca:TEST", "Local:DEMO", itd - por. opis argumentów programu).
 
 Klasa _HandlerBase_ to jednoczeœnie "biblioteka" wielu u¿ytecznych metod, które obs³uguj¹ ró¿ne drobiazgi powtarzajace siê w implementacji ka¿dego handlera. \
 W szczególnoœci udostêpnia w³aœciwoœci:
