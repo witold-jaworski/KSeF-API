@@ -35,7 +35,7 @@ namespace KSeF.Services.Test
 
 			_response = await _restClient.SendAsync<string, ExpandoObject?>(_method,
 																			_request,
-																			_data,
+																			_data, additionalHeaders: null,
 																			cancellationToken: stopToken).ConfigureAwait(false);
 			return;
 		}

@@ -15,7 +15,7 @@ namespace KSeF.Services.Api
 		//Struktura danych wejściowych (w JSON pierwsze litery nazw pól mają być małe):
 		protected class InputData
 		{
-			public required string OperationReferenceNumber { get; set; } //Zwrócone przez SubmitinvoicesRequest
+			public required string ReferenceNumber { get; set; } //Zwrócone przez SubmitinvoicesRequest
 			public required string AccessToken { get; set; } //token z AuthenticationToken, zwróconej przez SubmitXadesAuthRequest
 		}
 		//	Rezultat:	verbatim z KSeF.Client (InvoiceExportStatusResponse)
@@ -38,7 +38,7 @@ namespace KSeF.Services.Api
 			Debug.Assert(_input != null);
 			Debug.Assert(_ksefClient != null);
 
-			_output = await _ksefClient.GetInvoiceExportStatusAsync(_input.OperationReferenceNumber, _input.AccessToken, stopToken);
+			_output = await _ksefClient.GetInvoiceExportStatusAsync(_input.ReferenceNumber, _input.AccessToken, stopToken);
 		}
 
 		public override string SerializeResults()

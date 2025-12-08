@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using KSeF.Client.Api.Builders.Online;
 using KSeF.Client.Core.Interfaces.Services;
 using KSeF.Client.Core.Models.Sessions;
 using KSeF.Client.Core.Models.Sessions.OnlineSession;
@@ -50,7 +51,7 @@ namespace KSeF.Services.Api
 
 			var cryptoService = Scope.GetRequiredService<ICryptographyService>();
 			var enc = cryptoService.GetEncryptionData();
-			
+
 			_params.Request = OpenOnlineSessionRequestBuilder.Create()
 				.WithFormCode(inp.InvoiceFormat.SystemCode, inp.InvoiceFormat.SchemaVersion, inp.InvoiceFormat.Value)
 				.WithEncryption(enc.EncryptionInfo.EncryptedSymmetricKey, enc.EncryptionInfo.InitializationVector)
@@ -65,7 +66,7 @@ namespace KSeF.Services.Api
 		public override async Task ProcessAsync(CancellationToken stopToken)
 		{
 			Debug.Assert(_ksefClient != null);
-			var result = await _ksefClient.OpenOnlineSessionAsync(_params.Request, _params.AccessToken, stopToken);
+			var result = await _ksefClient.OpenOnlineSessionAsync(_params.Request, _params.AccessToken, cancellationToken: stopToken);
 			if (result == null) throw new NullReferenceException("referenceNumber");
 			_output.ReferenceNumber = result.ReferenceNumber;
 		}

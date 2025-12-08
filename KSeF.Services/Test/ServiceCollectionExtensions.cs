@@ -35,8 +35,8 @@ namespace KSeF.Services.Test
 				});
 
 			//Przypisanie klas do żądań, deklarowanych w ich atrybutach 
-			//(Wyłącznie z tej samej przestrzeni nazw, co klasa wywołująca tę metodę klasy HandlerProvider)
-			HandlerProvider.InitializeFor(typeof(ServiceCollectionExtensions)); //W typeof() wskazuj klasę wywołującą
+			//(Klasy wyłącznie z KSeF.Serices.Test)
+			HandlerProvider.InitializeFor(".Test"); 
 
 			//Zarejestrowanie serwisu, który tworzy obiekty do obsługi żądań Klienta
 			services.AddScoped<IRequestHandlerProvider, HandlerProvider>();

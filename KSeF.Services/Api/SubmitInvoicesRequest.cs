@@ -65,7 +65,7 @@ namespace KSeF.Services.Api
 		public override async Task ProcessAsync(CancellationToken stopToken)
 		{
 			Debug.Assert(_ksefClient != null);
-			var result = await _ksefClient.ExportInvoicesAsync(_params.Request, _params.AccessToken, stopToken);
+			var result = await _ksefClient.ExportInvoicesAsync(_params.Request, _params.AccessToken, cancellationToken: stopToken);
 			_output.ReferenceNumber = result.ReferenceNumber;
 		}
 

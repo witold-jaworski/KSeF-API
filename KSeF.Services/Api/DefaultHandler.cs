@@ -64,8 +64,8 @@ namespace KSeF.Services.Api
 			Debug.Assert(_input != null);
 
 			_response = await _restClient.SendAsync<string, object?>(_params.method, _request,
-																_params.body, _input.AccessToken, _params.contentType,
-																cancellationToken: stopToken, _input.Headers).ConfigureAwait(false);
+																_params.body, _input.AccessToken, _params.contentType, _input.Headers,
+																cancellationToken: stopToken).ConfigureAwait(false);
 		}
 
 		public override string SerializeResults()

@@ -1,5 +1,5 @@
 # KSeF Services - opis aplikacji
-wersja 0.8.0
+wersja 0.9.0
 
 **KSeF.Services** to "działająca w tle"  aplikacja (*background service*) Microsoft Windows[^1]. Pozwala korzystającym z niej programom wywoływać metody API KSeF i zwraca rezultaty tych metod. Wykonuje wymagane przez to API zaawansowane operacje na danych wejściowych, związane z szyfrowaniem, liczeniem skrótów, czy infrastrukturą PKI. Korzystając z niej można implementować obsługę KSeF w  starszych językach programowania lub skryptach (np. JScript, VBA). W dalszym tekście będę je określał jako <u>**Klienta**</u>, a Ksef.Services - jako <u>**serwer**</u>.
 
@@ -23,6 +23,7 @@ wersja 0.8.0
   - [Polecenia wspólne](#polecenia-wspolne)
     - [END](#end)
   - [Polecenia lokalne](#polecenia-lokalne)
+    - [#WindowState](#windowstate)
     - [#ToBase64](#tobase64)
     - [#FromBase64](#frombase64)
     - [#EncodeData](#encodedata)
@@ -59,7 +60,7 @@ wersja 0.8.0
     - [ListSubjectInvoices](#listsubjectinvoices)
     - [GetInvoice](#getinvoice)
     - [SubmitInvoicesRequest](#submitinvoicesrequest)
-    - [GetInvoiceRequestStatus](#getinvoicerequeststatus)
+    - [GetInvoicesRequestStatus](#getinvoicesrequeststatus)
     - [DownloadInvoices](#downloadinvoices)
     - [CreateKsefCsr](#createksefcsr)
     - [CompleteKsefCertificate](#completeksefcertificate)
@@ -68,6 +69,8 @@ wersja 0.8.0
     - [/posts](#posts)
     - [(pozostałe)](#pozostae)
 - [Lista zmian w programie](#lista-zmian-w-programie)
+  - [wersja 0.9.0.5](#wersja-0.9.0.5)
+  - [wersja 0.9.0.0](#wersja-0.9.0.0)
   - [wersja 0.8.0.0](#wersja-0.8.0.0)
   - [wersja 0.7.0.0](#wersja-0.7.0.0)
   - [wersja 0.6.0.0](#wersja-0.6.0.0)
@@ -506,6 +509,30 @@ Po wywołaniu polecenia **END** Klient może odczekać chwilkę (np. pół sekun
   Jeżeli masz otwarty potok *.sta*, to tuż przed wysłaniem polecenia END odczytaj z niego linię (np. funkcją *ReadLine*). (Potok *.sta* zawsze zawiera tylko jedną linię). Jeżeli o tym zapomnisz, w logu programu zobaczysz komunikat o błędzie "broken pipe" podczas kończenia działania aplikacji.
 ## Polecenia lokalne
 Polecenia dostępne w trybie offline (*TargetUrl*=**Local[:symbol]**), nie wymagające połączenia z siecią. Symbol tego trybu to np. *Local:TEST* dla środowiska testowego, albo *Local:PROD* dla generowania kodów QR faktur wystawionych w trybie offline.
+
+### #WindowState
+Zwraca i (ewentualnie) zmienia stan okna konsoli programu
+
+_[=> spis treści](#spis-tresci)_
+
+ARGUMENTY:
+* _setTo_ <= zawsze\
+Liczba całkowita (jedna ze flag SW_* używanych w wywołaniu Win API _ShowWindow()_): 0 = HIDE, 1: NORMAL, 3: MAXIMIZE, 6: MINIMIZE). Jeżeli przekażesz wartość spoza ich zakresu (0..10), to wartość _setTo_ zostanie zignorowana.
+
+Przykład:
+```json
+	{"setTo":1}
+```
+REZULTAT:
+* _before_ <= zawsze \
+stan okna w przed wywołaniem tego żądania. Liczba całkowita o takim samym znaczeniu jak _setTo_
+
+Przykład:
+```json
+	{"before":0}
+```
+>[!TIP]
+>Wywołuj to żądanie z wartością _setTo_ = -1, aby tylko sprawdzić aktualny stan okna konsoli programu. (W istocie to nie musi być -1, tylko dowolna liczba spoza zakresu 0..10).
 
 ### #ToBase64
 Dokonuje konwersji danych na ciąg bajtów enkodowany w Base64.
@@ -2768,14 +2795,14 @@ Przykład:
 {
   "referenceNumber": "20250625-SO-2C3E6C8000-B675CF5D68-07",
   "encryption": 
-  {
-    "base64Key": "bdUVjqLj+y2q6aBUuLxxXYAMqeDuIBRTyr+hB96DaWKaGzuVHw9p+Nk9vhzgF/Q5cavK2k6eCh6SdsrWI0s9mFFj4A4UJtsyD8Dn3esLfUZ5A1juuG3q3SBi/XOC/+9W+0T/KdwdE393mbiUNyx1K/0bw31vKJL0COeJIDP7usAMDl42/H1TNvkjk+8iZ80V0qW7D+RZdz+tdiY1xV0f2mfgwJ46V0CpZ+sB9UAssRj+eVffavJ0TOg2b5JaBxE8MCAvrF6rO5K4KBjUmoy7PP7g1qIbm8xI2GO0KnfPOO5OWj8rsotRwBgu7x19Ine3qYUvuvCZlXRGGZ5NHIzWPM",
-    "base64Mix": "OmtDQdl6vkOI1GLKZSjgEg=="
-  }
+	{
+		"base64Key": "yvhR5JQa0hEEPmsi/d1aLSfiu0N3c36ezDEapyk6JZU=",
+		"base64Mix": "TZxl3IUHbxc9IpLn00WoOA=="
+	}
 }
 ```
 
-### GetInvoiceRequestStatus
+### GetInvoicesRequestStatus
 
 Podaje status żądania pobrania (w API nazwya się to "eksportem") faktur
 
@@ -2783,7 +2810,7 @@ _[=> spis treści](#spis-tresci)_
 
 ARGUMENTY:
 
-* _operationReferenceNumber_  <= zawsze \
+* _referenceNumber_  <= zawsze \
 Numer referencyjny żądania
 
 * _accessToken_ <= zawsze \
@@ -2849,7 +2876,179 @@ Tylko dla sesji o statusie 200. Linki do pobrania paczek z fakturami. (Szczegó�
 ```
 
 ### DownloadInvoices
-Pobiera paczki z fakturami i rozpakowauje ich zawartość (pliki *.XML faktur) do wskazanego folderu na dysku. 
+Pobiera paczki z fakturami i rozpakowauje ich zawartość (pliki *.XML faktur) do wskazanego folderu na dysku. Zwraca listę metadanych pobranych faktur.
+
+_[=> spis treści](#spis-tresci)_
+
+ARGUMENTY:
+
+* _dstFolder_  <= zawsze \
+Folder, w którym mają być zapisane pliki XML faktur z paczki
+
+* _encryption_  <= zawsze \
+  Informacje o szyfrowaniu, które należy zastosować dla odszyfrowania otrzymanych paczek z fakturami. To struktura uzyskana z żądania [SubmitInvoicesRequest](#submitinvoicesrequest)
+
+* _package_  <= zawsze \
+  pakiet informacji o paczce faktur udostępnionej do pobrania. To struktura uzyskana z żądania [GetInvoicesRequestStatus](#getinvoicesrequeststatus)
+
+
+Przykład:
+```json
+{
+	"dstFolder":"C:\\Users\\Hyperbook\\Documents\\ZigZak\\KSeF\\Connector\\data\\TEST\\9999999999\\Results\\Received\\",
+	"encryption": 
+	{
+		"base64Key": "yvhR5JQa0hEEPmsi/d1aLSfiu0N3c36ezDEapyk6JZU=",
+		"base64Mix": "TZxl3IUHbxc9IpLn00WoOA=="
+	},
+    "package": 
+	{
+        "invoiceCount": 10,
+        "size": 16784,
+        "parts": 
+		[
+            {
+                "ordinalNumber": 1,
+                "partName": "20251124-EH-344038D000-599E353693-13-001.zip.aes",
+                "method": "GET",
+                "url": "https://ksef-test.mf.gov.pl/storage/05/20251124-eh-344038d000-599e353693-13/invoice-package/20251124-EH-344038D000-599E353693-13-001.zip.aes?skoid=0e92608a-831d-404b-9945-197ed82a5dbc&sktid=647754c7-3974-4442-a425-c61341b61c69&skt=2025-11-22T02%3A41%3A34Z&ske=2025-11-29T02%3A41%3A34Z&sks=b&skv=2025-01-05&sv=2025-01-05&st=2025-11-24T15%3A08%3A25Z&se=2025-11-24T16%3A13%3A25Z&sr=b&sp=r&sig=NPcyvcTshDTZF4ZWEMbXGLyNgqEICM1vLAXPlhW2ewY%3D",
+                "partSize": 16784,
+                "partHash": "7FG7M+KeM1DTc16GlG05phExzEWYX4jwlItU3Cu9z38=",
+                "encryptedPartSize": 16800,
+                "encryptedPartHash": "VearButtwE+SgKyZ0UELllRHQlmPYbtnxivhIgq/vUw=",
+                "expirationDate": "2025-11-24T16:13:25.945309+00:00"
+            }
+        ],
+        "isTruncated": false
+    }
+}
+```
+
+ZWRACA:
+
+* _isTruncated_ <= zawsze \
+Wartość _true/false_, przepisana z _package_ (wstawiłem ją tak "dla porządku"). _True_, gdy pobrano 10 tys. faktur i nie są to wszystkie dokumenty spełniające kryteria przekazane w [SubmitInvoicesRequest](#submitinvoicesrequest).
+   
+* _invoices_ <= zawsze \
+Lista metadanych pobranych faktur. Szczegółowy opis - por. dokumentacja API, [Pobranie listy metadanych faktur](https://ksef-test.mf.gov.pl/docs/v2/index.html#tag/Pobieranie-faktur/paths/~1api~1v2~1invoices~1query~1metadata/post).
+
+Przykład:
+```json
+{
+    "isTruncated": false,
+    "invoices": 
+    [
+        {
+            "ksefNumber": "5318308817-20251008-010020010448-AF",
+            "invoiceNumber": "4/FVT/25/10",
+            "issueDate": "2025-01-07T00:00:00+01:00",
+            "invoicingDate": "2025-10-08T10:28:49.883+00:00",
+            "acquisitionDate": "2025-10-08T10:29:16.937+00:00",
+            "permanentStorageDate": "2025-10-08T10:29:59.159038+00:00",
+            "seller": {
+                "nip": "5318308817",
+                "name": "XXXXXXXX-XXXXXXXX XX. X X.X."
+            },
+            "buyer": {
+                "identifier": {
+                    "type": "VatUe",
+                    "value": "PL999999999"
+                },
+                "name": "EFG GmbH"
+            },
+            "netAmount": 444.6,
+            "grossAmount": 444.6,
+            "vatAmount": 0,
+            "currency": "PLN",
+            "invoicingMode": "Offline",
+            "invoiceType": "Vat",
+            "formCode": {
+                "systemCode": "FA (3)",
+                "schemaVersion": "1-0E",
+                "value": "FA "
+            },
+            "isSelfInvoicing": false,
+            "hasAttachment": false,
+            "invoiceHash": "yo2vMMYNvZs+DamRkZiAnnCDNfbD2D5ZZfiMXrVswFg=",
+            "thirdSubjects": [
+                {
+                    "identifier": {
+                        "type": "Nip",
+                        "value": "9999999999"
+                    },
+                    "name": "XXXX X.X.",
+                    "role": 2
+                },
+                {
+                    "identifier": {
+                        "type": "Nip",
+                        "value": "9999999999"
+                    },
+                    "name": "XXXX X.X. XXXXXXXXXXX XXXXXXXX XXXXX. XXXXXX. X.X.",
+                    "role": 10
+                }
+            ]
+        },
+
+		.
+		.
+		.
+
+        {
+            "ksefNumber": "5318308817-20251008-010040DE3646-65",
+            "invoiceNumber": "3/FVT/25/10",
+            "issueDate": "2025-01-07T00:00:00+01:00",
+            "invoicingDate": "2025-10-08T10:13:06.885+00:00",
+            "acquisitionDate": "2025-10-08T10:13:32.53+00:00",
+            "permanentStorageDate": "2025-10-08T10:14:05.267674+00:00",
+            "seller": {
+                "nip": "5318308817",
+                "name": "XXXXXXXX-XXXXXXXX XX. X X.X."
+            },
+            "buyer": {
+                "identifier": {
+                    "type": "VatUe",
+                    "value": "PL999999999"
+                },
+                "name": "EFG GmbH"
+            },
+            "netAmount": 444.6,
+            "grossAmount": 444.6,
+            "vatAmount": 0,
+            "currency": "PLN",
+            "invoicingMode": "Offline",
+            "invoiceType": "Vat",
+            "formCode": {
+                "systemCode": "FA (3)",
+                "schemaVersion": "1-0E",
+                "value": "FA "
+            },
+            "isSelfInvoicing": false,
+            "hasAttachment": false,
+            "invoiceHash": "DzEHXHiYYY0/BWZEK8Ov+o3EHdBUxOroaCVrcDuQcok=",
+            "thirdSubjects": [
+                {
+                    "identifier": {
+                        "type": "Nip",
+                        "value": "9999999999"
+                    },
+                    "name": "XXXX X.X.",
+                    "role": 2
+                },
+                {
+                    "identifier": {
+                        "type": "Nip",
+                        "value": "9999999999"
+                    },
+                    "name": "XXXX X.X. XXXXXXXXXXX XXXXXXXX XXXXX. XXXXXX. X.X.",
+                    "role": 10
+                }
+            ]
+        }
+    ]
+}
+```
+
 
 ### CreateKsefCsr
 Tworzy i zwraca nowy wniosek (CSR) o certyfikat KSeF, oraz powiązany z nim klucz prywatny.
@@ -3052,6 +3251,16 @@ różne struktury udostępniane przez ToDo. Na przykład, poniżej przedstawiam 
 <!-- W Visual Studio wersję zmieniasz we właściwościach projektu Ksef.Services, u samego dołu sekcji Package/General (szybciej skoczyć do /License i przewinąć ekran w górę) -->
 
 # Lista zmian w programie 
+
+## wersja 0.9.0.5
+2025-12-06
+* Adaptacja kodu do RC 6.01 biblioteki MF (KSeF.Client.Core, KSeF.Client).
+
+## wersja 0.9.0.0
+2025-11-24
+* Dodane i przetestowane polecenia pobraniu (eksportu z KSeF) paczki faktur: SubmitInvoicesRequest, GetInvoicesRequestStatus, DownloadInvoices.
+* Dodane polecenie #WindowState, sterujące trybem wyświetlania okna konsoli KSeF.Services. (Okazało się potrzebne, by przy okazji wywoływania #XadesSign dla podpisu z magazynu Windows na chwilę zmienić stan okna do _Normal_. Tylko w takim stanie ewentualne systemowe okno dialogowe na wpianie PIN użytego certyfikatu pojawia się na pierwszym planie). 
+* Usunięte różne zauważone błędy.
 
 ## wersja 0.8.0.0
 2025-11-06

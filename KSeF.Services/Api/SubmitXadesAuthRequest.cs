@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
+using KSeF.Client.Api.Services;
 using KSeF.Client.Core.Interfaces.Services;
 using KSeF.Client.Core.Models.Authorization;
 using KSeF.Client.Http;
@@ -62,8 +63,7 @@ namespace KSeF.Services.Api
 				var unsignedXml = BuildAuthRequest(input.Challenge, input.Nip, input.Iid, input.NipVatUe, input.UseFingertip);
 				var certificate = LoadCertificate(null, certPem: input.CertificatePem, null, pkeyPem: input.PrivateKeyPem);
 
-				var signatureService = Scope.GetRequiredService<ISignatureService>();
-				_params.signedXml = signatureService.Sign(unsignedXml, certificate);
+				_params.signedXml = SignatureService.Sign(unsignedXml, certificate);
 			}
 			else //otrzymaliśmy ścieżkę do podpisanego pliku XML
 			{

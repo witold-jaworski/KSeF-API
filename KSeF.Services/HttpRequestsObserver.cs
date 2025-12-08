@@ -46,6 +46,12 @@ namespace KSeF.Services
 			public void OnCompleted() { }
 			public void OnError(Exception error) { }
 
+			//Pokazywać w logu nagłówki żądań HTTP?
+			public bool ShowHeaders { get { return _logger.IsEnabled(LogLevel.Trace); } }
+
+			//Pokazywać w logu dane żądań HTTP?
+			public bool ShowContent { get { return _logger.IsEnabled(LogLevel.Trace); } }
+
 			//Odnotowuje w logu żądanie i odpowiedź HTTP. Dla poziomu logowania Trace zapisuje je z nagłówkami HTTP:
 			public void OnNext(KeyValuePair<string, object?> value)
 			{
@@ -58,7 +64,7 @@ namespace KSeF.Services
 					if (value.Value == null) return;
 					var request = RequestAccessor(value.Value);
 					if (request != null)
-						_logger.LogDebug("Sending HTTP request:\n {request}", FormatForLog(request, _logger.IsEnabled(LogLevel.Trace)));
+						_logger.LogDebug("Sending HTTP request:\n {request}", FormatForLog(request, ShowHeaders, ShowContent));
 				}
 				else if (value.Key == "System.Net.Http.HttpRequestOut.Stop")
 				{
@@ -66,7 +72,7 @@ namespace KSeF.Services
 					if (value.Value == null) return;
 					var response = ResponseAccessor(value.Value);
 					if (response != null)
-						_logger.LogDebug("Received HTTP response:{response}", FormatForLog(response, _logger.IsEnabled(LogLevel.Trace)));
+						_logger.LogDebug("Received HTTP response:{response}", FormatForLog(response, ShowHeaders, ShowContent));
 				}
 			}
 
@@ -103,7 +109,7 @@ namespace KSeF.Services
 					string contentText = contentReader.ReadToEnd();
 
 					//Na koniec: maskowanie w tekście ewentualnych tokenów 
-#if !DEBUG			//(wyłączam dla wersji deweloperskiej)
+#if !DEBUG			//(wyłączam dla wersji deweloperskiej) 
 					if(contentText == "application/json") LoggerExtensions.MaskRestrictedFields(ref contentText);
 #endif
 					return $"\t\t{contentText.Replace("\n", "\n\t\t")}";
@@ -115,7 +121,8 @@ namespace KSeF.Services
 			//Argumenty:
 			//	request:		żądanie HTTP do opisania
 			//	includeHeaders:	opcjonalny: flaga, czy pokazać w opisie nagłówki HTTP
-			private static string FormatForLog(HttpRequestMessage request, bool includeHeaders = false)
+			//  includeContent:	opcjonalny: flaga, czy pokazać w opisie dane żądania
+			private static string FormatForLog(HttpRequestMessage request, bool includeHeaders = false, bool includeContent = false)
 			{
 				var str = new StringBuilder();
 				str.AppendLine($"\tURL: {request.RequestUri}");
@@ -130,7 +137,7 @@ namespace KSeF.Services
 				if (request.Content != null)
 				{
 					str.AppendLine($"\tData:\t{request.Content.Headers.ToString().Replace("\n", "\n\t\t")}");
-					str.AppendLine(ToString(request.Content));
+					if (includeContent) str.AppendLine(ToString(request.Content));
 				}
 				else
 					str.AppendLine("\t-- no data --");
@@ -142,19 +149,19 @@ namespace KSeF.Services
 			//Argumenty:
 			//	response:		odpowiedź HTTP do opisania
 			//	includeHeaders:	opcjonalny: flaga, czy pokazać w opisie nagłówki odpowiedzi HTTP
-			//UWAGA: nie mogłem załączyć stringu z "surową" zawartością Content, bo bym ja "zjadł",
-			//uniemożliwiając jej odczytanie metodom klasy RestClient. Pokazuję tylko jego opis (nagłowki)
-			private static string FormatForLog(HttpResponseMessage response, bool includeHeaders = false)
+			//  includeContent:	opcjonalny: flaga, czy pokazać w opisie dane odpowiedzi
+			private static string FormatForLog(HttpResponseMessage response, bool includeHeaders = false, bool includeContent = false)
 			{
 				var str = new StringBuilder();
 				str.AppendLine($"\t{(int) response.StatusCode} ({response.StatusCode})"); //Pierwsza linia jest kontynuacją stałego tekstu
 				if (response.Content != null)
 				{
 					str.AppendLine($"\tData:\t{response.Content.Headers.ToString().Replace("\n", "\n\t\t")}");
-					str.AppendLine(ToString(response.Content));
+					if (includeContent) str.AppendLine(ToString(response.Content));
 				}
 				else
 					str.AppendLine("\t-- no data --");
+
 				if (includeHeaders)
 				{
 					if (response.Headers != null)

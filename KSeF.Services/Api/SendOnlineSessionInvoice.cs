@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using KSeF.Client.Api.Builders.Online;
 using KSeF.Client.Core.Interfaces.Services;
 using KSeF.Client.Core.Models.Sessions;
 using KSeF.Client.Http;

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KSeF.Client.Core.Interfaces.Rest;
+using System.Reflection;
 
 namespace KSeF.Services
 {
@@ -32,22 +33,21 @@ namespace KSeF.Services
 		//Wypełnianie słownika żądań na podstawie atrybutów 'HandlesRequest',
 		//umieszczonych w dekoratorach przy odpowiednich klasach. Wywołaj przed zarejestrowaniem tego serwisu w hoście.
 		//Argumenty:
-		//	info:	jakakolwiek klasa należąca do przestrzeni nazw, z której mają być klasy rejestrowane w _handlers. 
-		//			 Możesz tu podstawić klasę rozszerzeń, która wywołuje tę metodę.
-		//Uwaga: rejestrowane są handlery, których przestrzenie nazw ZACZYNAJĄ się od przestrzeni nazw typu <info>.
-		//np. gdy Namespace <info> to 'Ksef.Services.Api', to metoda zarejestruje klasy z dwóch przestrzeni nazw:
+		//	assembly:	zestaw, zawierający kod klas obsługi żądań
+		//	nspace:		przestrzeń nazw, z której mają być klasy rejestrowane w _handlers. 
+		//Uwaga: rejestrowane są handlery, których przestrzenie nazw ZACZYNAJĄ się od przestrzeni nazw <namespace>.
+		//np. gdy <namespace> to 'Ksef.Services.Api', to metoda zarejestruje klasy z dwóch przestrzeni nazw:
 		//Ksef.Services.Api
 		//Ksef.Services.Api.Local
-		public static void InitializeFor(Type info)
+		public static void InitializeFor(Assembly assembly, string nspace)
 		{
 			if (_handlers.Keys.Count > 0) return;  //Tę metodę można wywołać tylko raz
-			Debug.Assert(info.Name != null,$"Wrong reference object {info} with no namespace passed as the reference for request handlers registering.");
-			if (info.Namespace == null) return;	//coś poszło bardzo źle - lepiej niczego nie rejestrować.
+			Debug.Assert(nspace != "","Empty namespace passed as the reference for request handlers registering.");
 
-			foreach(Type tp in info.Assembly.GetTypes())
-				if(tp.Namespace != null && tp.Namespace.StartsWith(info.Namespace))
-					foreach(Attribute at in tp.GetCustomAttributes(typeof(HandlesRequestAttribute), false)) //Jedna klasa może obsługiwać
-																											//kilka żądań (ma kilka atrybutów):
+			foreach(Type tp in assembly.GetTypes())
+				if(tp.Namespace != null && tp.Namespace.StartsWith(nspace))
+					//Jedna klasa <tp> może obsługiwać kilka żądań (mieć kilka atrybutów HandlesRequest ):
+					foreach (Attribute at in tp.GetCustomAttributes(typeof(HandlesRequestAttribute), false).Cast<Attribute>())	
 					{
 						var hra = (HandlesRequestAttribute) at;
 						var key = hra.Request.ToLower(); //Symbole żądań nie odróżniają dużych i małych liter
@@ -61,6 +61,17 @@ namespace KSeF.Services
 					}
 
 		}
+
+		//Uproszczona wersja inicjalizacji - z aktualnego zestawu (assembly),
+		//Argumenty:
+		//	ns:	przestrzeń nazw. Jeżeli zaczyna się od kropki  (np. ".Api"), to z przodu będzie dołączona  "KSeF.Services"
+		public static void InitializeFor(string ns)
+		{
+			Assembly assembly = Assembly.GetExecutingAssembly();
+			if (ns.StartsWith('.')) ns = typeof(HandlerProvider).Namespace + ns;
+			InitializeFor(assembly, ns);
+		}
+
 #pragma warning disable CS8600, CS8602 // Possilbe use of null 
 		public IRequestHandler GetHandlerFor(string request, IServiceProvider services)
 		{

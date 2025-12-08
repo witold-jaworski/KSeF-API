@@ -27,17 +27,14 @@ namespace KSeF.Services.Api
 			//Wewnętrznie ta metoda KSeF umieszcza w CryptographyService odwołanie do ICryptographyClient z naszego PublicCertificateProvider:
 			services.AddCryptographyClient(); //zostawiam domyślną WarmupMode = Blocking - aby mieć pewność, że się zainicjowało
 
-			//Linia wymagana, aby ISignatureService "umiało" podpisywać certyfikatami z kluczem ECDsa.
-			CryptoConfig.AddAlgorithm( typeof(Ecdsa256SignatureDescription), "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256");
-
 			//Przypisanie klas do żądań deklarowanych w ich atrybutach 
 			if (mode.StartsWith("local:", StringComparison.InvariantCultureIgnoreCase))
 			{   //zarejestruj żądania z tylko  przestrzeni nazw Ksef.Servies.Api.Local:
-				HandlerProvider.InitializeFor(typeof(GetMetadata)); //W typeof() wpisz jakąkolwiek klasę z odpowiedniej przestrzeni nazw
+				HandlerProvider.InitializeFor(".Api.Local"); //W typeof() wpisz jakąkolwiek klasę z odpowiedniej przestrzeni nazw
 			}
 			else //jesteśmy Online:
 			{	//zarejestruj żądania z przestrzeni nazw: Ksef.Servies.Api, Ksef.Servies.Api.Local (bo zagnieżdżona)
-				HandlerProvider.InitializeFor(typeof(ServiceCollectionExtensions)); 
+				HandlerProvider.InitializeFor(".Api"); 
 			}
 			//Zarejestrowanie serwisu, który tworzy obiekty do obsługi żądań Klienta
 			services.AddScoped<IRequestHandlerProvider, HandlerProvider>();

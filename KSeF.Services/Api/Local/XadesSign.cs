@@ -8,7 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Xml;
-using KSeF.Client.Core.Interfaces.Services;
+using KSeF.Client.Api.Services;
 using KSeF.Client.Http;
 
 namespace KSeF.Services.Api.Local
@@ -126,8 +126,7 @@ namespace KSeF.Services.Api.Local
 		//Podpisanie pliku za pomocą pobranego certyfikatu
 		public override Task ProcessAsync(CancellationToken stopToken)
 		{
-			var signatureService = Scope.GetRequiredService<ISignatureService>();
-			string signedXML = signatureService.Sign(_input.xml, _input.certificate);
+			string signedXML = SignatureService.Sign(_input.xml, _input.certificate);
 			signedXML ??= ""; //Na wszelki wypadek - gdy coś poszło nie tak i SignAsync zwróciło null, zwróci pusty plik
 			if (_output.SignedFile != null)
 				File.WriteAllText(_output.SignedFile, signedXML);

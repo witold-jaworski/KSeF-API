@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using KSeF.Client.Api.Services;
 using KSeF.Client.Core.Interfaces.Services;
 using KSeF.Client.Core.Models.QRCode;
 using KSeF.Client.Http;
@@ -171,8 +172,7 @@ namespace KSeF.Services.Api.Local
 			_output.LinkUrl = GenerateUrl(Scope.GetRequiredService<IVerificationLinkService>());
 			if (_input.saveToPng != null)
 			{
-				var qrService = Scope.GetRequiredService<IQrCodeService>();
-				byte[] bytes = qrService.GenerateQrCode(_output.LinkUrl, _input.pixelsPerDot, _input.imageSize);
+				byte[] bytes = QrCodeService.GenerateQrCode(_output.LinkUrl, _input.pixelsPerDot, _input.imageSize);
 				File.WriteAllBytes(_input.saveToPng, bytes );
 
 				_output.PathToPng = _input.saveToPng;

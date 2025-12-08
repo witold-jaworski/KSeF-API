@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.Unicode;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using KSeF.Client.Core.Exceptions;
 
 //Moduł na różne statyczne klasy z metodami rozszerzającymi funkcjonalność klas standardowych 
 namespace KSeF.Services
@@ -134,6 +129,7 @@ namespace KSeF.Services
 		private class JsonBag : Dictionary<string, object?> { }		
 		private static JsonBag ExceptionForJsonBuilder(Exception ex, int level = 0)
 		{
+			Debug.Assert(ex != null);
 			var exception = new JsonBag()
 			{
 				{"internalType", ex.GetType().ToString()},
@@ -142,6 +138,16 @@ namespace KSeF.Services
 				{"exceptionSource", ex.Source??"" },
 				{"exceptionTarget", ex.TargetSite?.ToString()??""}
 			};
+
+			if (ex is KsefRateLimitException)
+			{
+				KsefRateLimitException? rex=ex as KsefRateLimitException;
+				Debug.Assert(rex != null);
+				exception.Add("recommendedDelay", rex.RecommendedDelay);
+				if (rex.RetryAfterDate != null) exception.Add("retryAfterDate", rex.RetryAfterDate);
+				if (rex.RetryAfterSeconds != null) exception.Add("retryAfterSeconds", rex.RetryAfterSeconds);
+			}
+
 			if (ex.InnerException != null) 
 					exception.Add("triggeredBy", ExceptionForJsonBuilder(ex.InnerException, level + 1));
 			return exception;
@@ -258,7 +264,7 @@ namespace KSeF.Services
 		private const string MASK_FIELD = "(...)";
 		private const string MASK_DATA = "{...}";
 		private const string RESTRICTED_REQUESTS = "#EncodeData, #DecodeData, #FromBase64, #ToBase64"; //Danych tych żądań w ogóle nie pokazuj
-		private readonly static string[] _maskedFields = ["privateKeyPem","token", "certificatePem"];
+		private readonly static string[] _maskedFields = ["privateKeyPem","token", "certificatePem", "accessToken", "refreshToken"];
 		//Odnotowuje w logu dane przekazane wraz z żądaniem (tylko gdy logLevel jest Debug lub Trace)
 		//Argumenty:
 		//	request:	żądanie
@@ -313,10 +319,12 @@ namespace KSeF.Services
 				i = json.IndexOf(fieldName, i);
 				if (i < 0) return ret;
 				i = json.IndexOf(':', i);
-				if (i < 0) return ret;
+				if (i < 0 ) return ret; //
 				i1 = json.IndexOf('"', i); //cudzysłów otwierający
-				if (i1 < 0) return ret;  //cudzysłów zamykający
-				i2 = json.IndexOf('"', i1 + 1);
+				i2 = json.IndexOf('{', i); //klamra otwierająca
+				if (i1 < 0 ) return ret;  //pomiń,
+				if (i2 > 0 && i2 < i1) return ret; //pomiń także, jeżeli następnym po ':' znakiem jest klamra, a nie '"'
+				i2 = json.IndexOf('"', i1 + 1); //OK, od tej linii i2 to cudzysłów zamykający
 				if (i2 < 0) return ret;
 				ret |= true;
 				var result = new StringBuilder();

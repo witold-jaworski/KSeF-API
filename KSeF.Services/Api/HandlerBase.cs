@@ -250,7 +250,7 @@ namespace KSeF.Services.Api
 			return (key, iv);
 		}
 
-		//Pomocnicza funkcja, zwracająca np. XML z UPO
+		//Pomocnicza funkcja, zwracająca XML, np. z UPO
 		//Argumenty:
 		//	restClient:		klient Rest (to wywołanie występuje tylko w kilku klasach, nie chcę pobierać IRestClient w konstruktorze)
 		//	url:			url zasobu.
@@ -258,8 +258,7 @@ namespace KSeF.Services.Api
 		protected static async Task<string> DownloadTextAsync(IRestClient restClient, Uri url, 
 															CancellationToken stopToken = default)
 		{
-			return await restClient.SendAsync<string, object>(HttpMethod.Get, url.PathAndQuery, 
-																						cancellationToken: stopToken).ConfigureAwait(false);
+			return await restClient.SendAsync<string, object>(HttpMethod.Get, url.PathAndQuery, additionalHeaders: null,cancellationToken: stopToken).ConfigureAwait(false);
 		}
 
 		//Zwraca metadane certyfikatu w postaci odpowiedniej struktury

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Compression;
+using KSeF.Client.Api.Builders.Batch;
 using KSeF.Client.Core.Interfaces.Services;
 using KSeF.Client.Core.Models.Sessions;
 using KSeF.Client.Core.Models.Sessions.BatchSession;
@@ -86,7 +87,7 @@ namespace KSeF.Services.Api
 		public override async Task ProcessAsync(CancellationToken stopToken)
 		{
 			Debug.Assert(_ksefClient != null);
-			var response = await _ksefClient.OpenBatchSessionAsync(_params.Request, _params.AccessToken, stopToken);
+			var response = await _ksefClient.OpenBatchSessionAsync(_params.Request, _params.AccessToken, cancellationToken: stopToken);
 			//Wyślij przygotowane części zip-a:
 			await _ksefClient.SendBatchPartsAsync(response,_params.Parts, stopToken);
 			_output.ReferenceNumber = response.ReferenceNumber;

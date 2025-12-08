@@ -41,7 +41,7 @@ namespace KSeF.Services.Test
 			if (_restClient == null) return; //dodane tylko po to, by linia poniżej nie generowało ostrzeżenia:
 
 			_response = await _restClient.SendAsync<string, object>(HttpMethod.Get, 
-																	_request, 
+																	_request, additionalHeaders: null,
 																	cancellationToken:stopToken).ConfigureAwait(false);
 			return;
 		}

@@ -98,7 +98,7 @@ namespace KSeF.Services
 				case "demo":
 				case "local:demo":
 					builder.Services.AddApiClient(KsefEnvironmentsUris.DEMO, targetUrl);
-					return; 
+					break; 
 				case "prod":
 				case "local:prod":
 					// builder.Services.AddApiClient(KsefEnviromentsUris.PROD);
@@ -226,10 +226,12 @@ namespace KSeF.Services
 			dir = FullPath(dir);
 			if (File.Exists(Path.Combine(dir, fname)))
 			{
+				Console.WriteLine($"Loaded configuration file: '{dir}\\{fname}'");
 				builder.Configuration
 					.SetBasePath(dir)
 					.AddJsonFile(fname);
 			}
+			else Console.WriteLine($"Configuration file: '{dir}\\{fname}' does not exits");
 		}
 
 		//Zwraca numer wersji programu
