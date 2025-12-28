@@ -3,6 +3,8 @@
 
 **KSeF.Services.exe** jest programem lini poleceń napisanym w .NET 9.0. Powstał z szablonu _Worker Service_, towarzyszącemu SDK dla Windows. Jest przeznaczony do działania na tym samym komputerze, co program Klienta. Komunikuje się z nim poprzez potoki nazwane.   
 
+[Pobierz kompletny, skompilowany i gotowy do działania program](https://github.com/witold-jaworski/KSeF-API/releases) albo skompiluj go samodzielnie:
+
 >[!IMPORTANT]
 >Aby skompilować ten projekt, należy dodatkowo pobrać [oficjalną bibliotekę CIRFMF .NET dla KSeF](https://github.com/CIRFMF/ksef-client-csharp). Umieść jej folder (ksef-client-csharp) obok folderu tego rozwiązania[^1]:
 ```
