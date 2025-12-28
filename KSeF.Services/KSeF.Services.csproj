@@ -6,10 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-KSeF.Services-9ce86c9c-cf40-4880-b555-711f0cc90d72</UserSecretsId>
     <!-- <VersionPrefix>alpha-</VersionPrefix> --> <!-- z tym elementem lepiej nie eksperymentuj, bo to może *zepsuć kompilację* -->
-    <ProductVersion>0.9.0.5</ProductVersion>
+    <ProductVersion>1.0.0.0</ProductVersion>
     <FileVersion>$(VersionPrefix)$(ProductVersion)</FileVersion>
     <AssemblyVersion>$(VersionPrefix)$(ProductVersion)</AssemblyVersion>
-    <InformationalVersion>$(ProductVersion) (alpha)</InformationalVersion>
+    <InformationalVersion>$(ProductVersion)</InformationalVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks> <!-- W properties *.exe to "Product version". Dowolny tekst -->
   </PropertyGroup>
 

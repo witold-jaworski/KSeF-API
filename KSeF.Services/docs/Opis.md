@@ -1,5 +1,5 @@
 # KSeF Services - opis aplikacji
-wersja 0.9.0
+wersja 1.0.0
 
 **KSeF.Services** to "działająca w tle"  aplikacja (*background service*) Microsoft Windows[^1]. Pozwala korzystającym z niej programom wywoływać metody API KSeF i zwraca rezultaty tych metod. Wykonuje wymagane przez to API zaawansowane operacje na danych wejściowych, związane z szyfrowaniem, liczeniem skrótów, czy infrastrukturą PKI. Korzystając z niej można implementować obsługę KSeF w  starszych językach programowania lub skryptach (np. JScript, VBA). W dalszym tekście będę je określał jako <u>**Klienta**</u>, a Ksef.Services - jako <u>**serwer**</u>.
 
@@ -69,6 +69,7 @@ wersja 0.9.0
     - [/posts](#posts)
     - [(pozostałe)](#pozostae)
 - [Lista zmian w programie](#lista-zmian-w-programie)
+  - [wersja 1.0.0.0](#wersja-1.0.0.0)
   - [wersja 0.9.0.5](#wersja-0.9.0.5)
   - [wersja 0.9.0.0](#wersja-0.9.0.0)
   - [wersja 0.8.0.0](#wersja-0.8.0.0)
@@ -3251,6 +3252,10 @@ różne struktury udostępniane przez ToDo. Na przykład, poniżej przedstawiam 
 <!-- W Visual Studio wersję zmieniasz we właściwościach projektu Ksef.Services, u samego dołu sekcji Package/General (szybciej skoczyć do /License i przewinąć ekran w górę) -->
 
 # Lista zmian w programie 
+
+## wersja 1.0.0.0
+2025-12-25
+* Kompilacja z wersją 2.00 biblioteki MF (KSeF.Client.Core, KSeF.Client).
 
 ## wersja 0.9.0.5
 2025-12-06

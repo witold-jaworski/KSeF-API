@@ -101,9 +101,8 @@ namespace KSeF.Services
 					break; 
 				case "prod":
 				case "local:prod":
-					// builder.Services.AddApiClient(KsefEnviromentsUris.PROD);
-					Console.WriteLine("\nNo KSeF PROD environment (yet). \nProgram stops.");
-					return;
+					builder.Services.AddApiClient(KsefEnvironmentsUris.PROD, targetUrl);
+					break;
 				default:
 					//Podano adres wprost - diabli wiedz¹, co to jest 
 					builder.Services.AddApiClient(targetUrl,"???");
